@@ -1,5 +1,5 @@
 # Author: Sergio Cavalieri Canosa
-# Description: Main code for weatherApp project (julia)
+# Description: Acts as GET function libary for weatherApp project (julia)
 # Date: 2020-06-09
 using HTTP
 
@@ -10,6 +10,8 @@ function findcode(city)
 	elseif(city == "edinburgh")
 		code = 2650225
 	elseif(city == "garda")
+		code = 3176320
+	elseif(city == "YOUR_CITY_NAME_HERE")
 		code = 3176320
 	end
 	
@@ -27,7 +29,7 @@ end
 function getTemp(city)
 	responseS = getWeather(city)
 	rangeStart = findfirst("Wind Speed: ", responseS)
-	indexStart = last+1(rangeStart)
+	indexStart = last(rangeStart)+1
 	rangeEnd = findfirst("mph", responseS)
 	indexEnd = first(rangeEnd)-1
 	output = responseS[indexStart:indexEnd]
@@ -37,7 +39,7 @@ function getPressure(city)
 	responseS = getWeather(city)
 	rangeStart = findfirst("Pressure: ", responseS)
 	indexStart = last(rangeStart)+1
-	rangeEnd = findfirst("mb ", responseS)
+	rangeEnd = findfirst("mb", responseS)
 	indexEnd = first(rangeEnd)-1
 	output = responseS[indexStart:indexEnd]
 	return output
@@ -51,3 +53,4 @@ function getHumidity(city)
 	output = responseS[indexStart:indexEnd]
 	return output
 end
+#Insert more functions here
