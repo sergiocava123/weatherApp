@@ -12,3 +12,9 @@ user@linuxComputer ~ >>> julia timer.jl &
 ```
 The Data collected will be written to: "NAME_OF_CITY.csv"
 Units are C, mph and mbar.
+
+If you are not interested in the datalogging capability you can run:
+```julia
+julia >> include("lib.jl")
+julia >> getHumidity("Glasgow")
+```
