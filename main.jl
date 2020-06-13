@@ -11,10 +11,13 @@ println("city from setup file is: ", city)
 csvFilename = city*".csv"
 files = readdir()
 for i in 1:length(files)
+	exit = 1 #exit will ensure that if csvFilename is found 
 	if (files[i]==csvFilename)
-		println("CSV file already present")
+		println("CSV found")
 		global df = CSV.read(csvFilename)
-	else
+		exit = 1
+	elseif(exit!=1) #if no file found create new CSV file
+		pritln("[WARNING]: CSV not found... Creating")
 		global df = DataFrame(Date = [], Temperature = [], Humidity = [], Pressure = [];)
 		CSV.write(csvFilename, df)
 	end
@@ -28,9 +31,10 @@ else #If Dataframe has no data act as if yesterday's date were present
 	yYear = Dates.year(todayDay)
 	DateofLastEntry = Date(yYear, yMonth, yDay)
 end
-if (DateofLastEntry!=Dates.today()) #Check that an entry hasn't already been written today.
+if (DateofLastEntry!=string(Dates.today())) #Check that an entry hasn't already been written today. NOTE: Date must be stringed
 	println("updating df")
-	push!(df, [Dates.today() getTemp(city) getHumidity(city) getPressure(city)])
-end
-println("writing to CSV")
-CSV.write(csvFilename, df)
+	df2 = DataFrame(Date = Dates.today(), Temperature = getTemp(city), Humidity = getHumidity(city),Pressure = getPressure(city))
+	df3=vcat(df,df2) #Concatenate the Dataframe from CSV with new data
+	println("writing to CSV")
+	CSV.write(csvFilename, df3)#Write the new df to the CSV file
+end 
