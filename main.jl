@@ -1,6 +1,6 @@
 # Author: Sergio Cavalieri Canosa
-# Description: Main code for weatherApp project (julia)
-# Date: 2020-06-09
+# Description: Main example code for weatherApp project (julia)
+# Date: 2020-06-16
 using DataFrames, CSV, Dates
 include("lib.jl")
 
@@ -33,7 +33,7 @@ else #If Dataframe has no data act as if yesterday's date were present
 end
 if (DateofLastEntry!=string(Dates.today())) #Check that an entry hasn't already been written today. NOTE: Date must be stringed
 	println("updating df")
-	df2 = DataFrame(Date = Dates.today(), Temperature = getTemp(city), Humidity = getHumidity(city),Pressure = getPressure(city))
+	df2 = DataFrame(Date = Dates.today(), Temperature = getTempReadingNow(city), Humidity = getHumidityReadingNow(city),Pressure = getPressureReadingNow(city))
 	df3=vcat(df,df2) #Concatenate the Dataframe from CSV with new data
 	println("writing to CSV")
 	CSV.write(csvFilename, df3)#Write the new df to the CSV file

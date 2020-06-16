@@ -17,7 +17,7 @@ function findcode(city)
 	
 	return code
 end
-function getWeather(city)
+function getWeatherForecastToday(city)
 	city = lowercase(city) #convert to lowercase
 	code = findcode(city)
 	url= string("https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/",code)
@@ -25,9 +25,17 @@ function getWeather(city)
 	responseS = String(response.body)
 	return responseS
 end
+function getWeatherReadingNow(city)
+	city = lowercase(city) #convert to lowercase
+	code = findcode(city)
+	url= string("https://weather-broker-cdn.api.bbci.co.uk/en/observation/rss/",code)
+	response = HTTP.request("GET", url;)
+	responseS = String(response.body)
+	return responseS
+end
 
-function getTemp(city)
-	responseS = getWeather(city)
+function getTempForecastToday(city)
+	responseS = getWeatherForecastToday(city)
 	rangeStart = findfirst("Wind Speed: ", responseS)
 	indexStart = last(rangeStart)+1
 	rangeEnd = findfirst("mph", responseS)
@@ -35,8 +43,8 @@ function getTemp(city)
 	output = responseS[indexStart:indexEnd]
 	return output
 end
-function getPressure(city)
-	responseS = getWeather(city)
+function getPressureForecastToday(city)
+	responseS = getWeatherForecastToday(city)
 	rangeStart = findfirst("Pressure: ", responseS)
 	indexStart = last(rangeStart)+1
 	rangeEnd = findfirst("mb", responseS)
@@ -44,8 +52,8 @@ function getPressure(city)
 	output = responseS[indexStart:indexEnd]
 	return output
 end
-function getHumidity(city)
-	responseS = getWeather(city)
+function getHumidityForecastToday(city)
+	responseS = getWeatherForecastToday(city)
 	rangeStart = findfirst("Humidity: ", responseS)
 	indexStart = last(rangeStart)+1
 	rangeEnd = findfirst("%,", responseS)
@@ -53,4 +61,65 @@ function getHumidity(city)
 	output = responseS[indexStart:indexEnd]
 	return output
 end
+function getTempReadingNow(city)
+	responseS = getWeatherReadingNow(city)
+	range = findfirst("°C", responseS) 
+	indexEnd = first(range)-1
+	indexStart = indexEnd-2
+	if(responseS[indexStart]==' ') #if empty move indexes until blank spaces are not present forwards
+		indexStart = indexEnd-1
+		if(responseS[indexStart]==' ')
+			indexStart = indexStart +1
+		end
+	end
+	output = responseS[indexStart:indexEnd]
+	return output
+end
+function getHumidityReadingNow(city)
+	reponseS = getWeatherReadingNow(city)
+	range = findfirst("%,", responseS)
+	indexEnd = first(range)-1
+	indexStart = indexEnd - 2
+		if(responseS[indexStart]==' ') #if empty move indexes until blank spaces are not present forwards
+		indexStart = indexEnd-1
+		if(responseS[indexStart]==' ')
+			indexStart = indexStart +1
+		end
+	end
+	output = responseS[indexStart:indexEnd]
+	return output
+end
+function getPressureReadingNow(city)
+	responseS = getWeatherReadingNow(city)
+	rangeStart = findfirst("Pressure: ", responseS)
+	indexStart = last(rangeStart)+1
+	rangeEnd = findfirst("mb", responseS)
+	indexEnd = first(rangeEnd)-1
+	output = responseS[indexStart:indexEnd]
+	return output
+end
+function getWindReadingNow(city)
+	responseS = getWeatherReadingNow(city)
+	range = findfirst("mph", responseS)
+	indexEnd = first(range)-1
+	indexStart = indexEnd - 1
+	if(responseS[indexStart]==' ') #if empty move indexes until blank spaces are not present forwards
+		indexStart = indexEnd-1
+		if(responseS[indexStart]==' ')
+			indexStart = indexStart +1
+		end
+	end
+	output = responseS[indexStart:indexEnd]
+	return output
+end
+	
+function getTimeReadingNow(city) #Time of Reading
+	responseS = getWeatherReadingNow(city)
+	range = findfirst("GMT", responseS)
+	indexEnd = first(range)-2
+	indexStart = indexEnd - 7
+	output = responseS[indexStart:indexEnd]
+	return output
+end
+	
 #Insert more functions here
