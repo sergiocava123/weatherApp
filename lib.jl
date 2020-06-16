@@ -113,7 +113,7 @@ function getWindReadingNow(city)
 	return output
 end
 	
-function getTimeReadingNow(city) #Time of Reading
+function (city) #Time of Reading
 	responseS = getWeatherReadingNow(city)
 	range = findfirst("GMT", responseS)
 	indexEnd = first(range)-2
