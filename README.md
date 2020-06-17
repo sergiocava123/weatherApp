@@ -2,7 +2,7 @@
 Weather application written fully in Julia
 
 Capable of reading same day forecast and readings for Temperature, Pressure and Humidity.
-This code simply presents simple functions that will interface with the BBC's RSS feeds.
+This code is a group of basic functions that will interface with the BBC's RSS feeds.
 An example of an implementation is also provided.
 ## Using the functions
 Copy the "lib.jl" file into the same directory of your main code. Then run:
