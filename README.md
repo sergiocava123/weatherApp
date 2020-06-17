@@ -31,7 +31,7 @@ Note that the getTimeReadingNow will simply output the hour of the observation i
 
 It is essential to make sure that the "lib.jl" file includes your city/location BBC code. If it's not there add it (lines 14 and 15) and feel free to update code here. The BBC code is the number at the end of the URL when you open the BBC forecast for your location from your browser.
 
-##Using the "main.jl" example implementation
+## Using the "main.jl" example implementation
 
 This utility will update a CSV file once a day by reading the RSS feed by BBC Weather. This is aimed at data collection.
 To run in it's standard form insert the city name in the "setup.txt" file on the second line. 
